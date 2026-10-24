@@ -1,4 +1,4 @@
-﻿name: Build CYBER-SHIELD PHANTOM APK
+name: Build CYBER-SHIELD PHANTOM APK
 
 on:
   push:
@@ -57,6 +57,10 @@ jobs:
           gradle assembleDebug --no-daemon --stacktrace --info --console=plain 2>&1 | tee build.log
           result=${PIPESTATUS[0]}
           echo "GRADLE_EXIT_CODE=$result" | tee -a build.log
+          echo ""
+          echo "========== GRADLE ERROR SUMMARY =========="
+          grep -n -A 8 -B 3 -E "What went wrong:|Execution failed for task|^e: |error:|Could not resolve|Could not find|Compilation error|Unresolved reference" build.log | tail -n 100 || true
+          echo "========== END ERROR SUMMARY ============="
           exit "$result"
 
       - name: Upload build log
