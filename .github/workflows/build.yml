@@ -59,7 +59,10 @@ jobs:
           echo "GRADLE_EXIT_CODE=$result" | tee -a build.log
           echo ""
           echo "========== GRADLE ERROR SUMMARY =========="
-          grep -n -A 8 -B 3 -E "What went wrong:|Execution failed for task|^e: |error:|Could not resolve|Could not find|Compilation error|Unresolved reference" build.log | tail -n 100 || true
+          echo "========== MATCHED FAILURE LINES =========="
+          grep -ni -A 6 -B 3 -E "FAILURE:|What went wrong|Execution failed|error|exception|Could not resolve|Could not find|Unresolved reference|BUILD FAILED" build.log | tail -n 180 || true
+          echo "========== LAST 250 LOG LINES ============="
+          tail -n 250 build.log
           echo "========== END ERROR SUMMARY ============="
           exit "$result"
 
