@@ -1,4 +1,4 @@
-name: Build CYBER-SHIELD PHANTOM APK
+﻿name: Build Android APK
 
 on:
   push:
@@ -12,65 +12,45 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: "17"
 
-      - name: Locate and install Android SDK packages
-        shell: bash
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
         run: |
-          set -euo pipefail
-          echo "ANDROID_HOME=${ANDROID_HOME:-not-set}"
-          SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
-          echo "SDK_ROOT=$SDK_ROOT"
-          if [ ! -d "$SDK_ROOT/cmdline-tools" ]; then
-            echo "::error::Android SDK command-line tools directory not found: $SDK_ROOT/cmdline-tools"
-            ls -la "$SDK_ROOT" || true
-            exit 1
-          fi
-          SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | head -n 1)"
-          if [ -z "$SDKMANAGER" ]; then
-            echo "::error::sdkmanager executable not found"
-            find "$SDK_ROOT" -maxdepth 4 -type f -name sdkmanager || true
-            exit 1
-          fi
-          echo "Using sdkmanager: $SDKMANAGER"
-          yes | "$SDKMANAGER" --licenses >/dev/null || true
-          "$SDKMANAGER" "platform-tools" "platforms;android-34" "build-tools;34.0.0"
-          echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
-          echo "ANDROID_SDK_ROOT=$SDK_ROOT" >> "$GITHUB_ENV"
+          sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          yes | sdkmanager --licenses
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.7'
+          gradle-version: "8.7"
 
-      - name: Build debug APK and capture diagnostics
+      - name: Build APK
         shell: bash
         run: |
           set +e
-          gradle assembleDebug --no-daemon --stacktrace --info --console=plain 2>&1 | tee build.log
+          gradle assembleDebug --no-daemon --stacktrace --console=plain 2>&1 | tee build.log
           result=${PIPESTATUS[0]}
-          echo "GRADLE_EXIT_CODE=$result" | tee -a build.log
-          echo ""
           echo "========== GRADLE ERROR SUMMARY =========="
-          echo "========== MATCHED FAILURE LINES =========="
-          grep -ni -A 6 -B 3 -E "FAILURE:|What went wrong|Execution failed|error|exception|Could not resolve|Could not find|Unresolved reference|BUILD FAILED" build.log | tail -n 180 || true
-          echo "========== LAST 250 LOG LINES ============="
-          tail -n 250 build.log
-          echo "========== END ERROR SUMMARY ============="
+          grep -ni -A 8 -B 4 -E "FAILURE:|What went wrong:|Execution failed|^e: |error:|Could not resolve|Could not find|Unresolved reference" build.log | tail -n 120 || true
+          echo "========== LAST LOG LINES ================"
+          tail -n 100 build.log
           exit "$result"
 
       - name: Upload build log
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: CYBER-SHIELD-PHANTOM-build-log
+          name: CyberShield-build-log
           path: build.log
           if-no-files-found: warn
 
@@ -78,6 +58,6 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: CYBER-SHIELD-PHANTOM-debug-apk
+          name: CyberShield-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
