@@ -1,27 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- لیست برنامه‌های نصب‌شده (Android 11+). گوگل‌پلی برای این مجوز فرم توجیهی می‌خواهد؛ آنتی‌ویروس مورد مجاز است. -->
+    <!-- ظ„غŒط³طھ ط¨ط±ظ†ط§ظ…ظ‡â€Œظ‡ط§غŒ ظ†طµط¨â€Œط´ط¯ظ‡ (Android 11+). ع¯ظˆع¯ظ„â€Œظ¾ظ„غŒ ط¨ط±ط§غŒ ط§غŒظ† ظ…ط¬ظˆط² ظپط±ظ… طھظˆط¬غŒظ‡غŒ ظ…غŒâ€Œط®ظˆط§ظ‡ط¯ط› ط¢ظ†طھغŒâ€ŒظˆغŒط±ظˆط³ ظ…ظˆط±ط¯ ظ…ط¬ط§ط² ط§ط³طھ. -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" tools:ignore="QueryAllPackagesPermission" />
-    <!-- برای حذف برنامه‌های آلوده با دیالوگ تأیید سیستم -->
+    <!-- ط¨ط±ط§غŒ ط­ط°ظپ ط¨ط±ظ†ط§ظ…ظ‡â€Œظ‡ط§غŒ ط¢ظ„ظˆط¯ظ‡ ط¨ط§ ط¯غŒط§ظ„ظˆع¯ طھط£غŒغŒط¯ ط³غŒط³طھظ… -->
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
-    <!-- اسکن سنگین: گشتن کل حافظه (کاربر باید دستی اجازه بدهد) -->
+    <!-- ط§ط³ع©ظ† ط³ظ†ع¯غŒظ†: ع¯ط´طھظ† ع©ظ„ ط­ط§ظپط¸ظ‡ (ع©ط§ط±ط¨ط± ط¨ط§غŒط¯ ط¯ط³طھغŒ ط§ط¬ط§ط²ظ‡ ط¨ط¯ظ‡ط¯) -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- مصرف/زمان استفاده برنامه‌ها؛ کاربر باید دستی از Settings → Usage access بدهد -->
+    <!-- ظ…طµط±ظپ/ط²ظ…ط§ظ† ط§ط³طھظپط§ط¯ظ‡ ط¨ط±ظ†ط§ظ…ظ‡â€Œظ‡ط§ط› ع©ط§ط±ط¨ط± ط¨ط§غŒط¯ ط¯ط³طھغŒ ط§ط² Settings â†’ Usage access ط¨ط¯ظ‡ط¯ -->
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
 
     <application
         android:name=".CyberApp"
         android:allowBackup="false"
         android:requestLegacyExternalStorage="true"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="CyberGuard"
         android:theme="@style/Theme.CyberGuard">
         <activity android:name=".MainActivity" android:exported="true">
@@ -32,3 +30,4 @@
         </activity>
     </application>
 </manifest>
+
